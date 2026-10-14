@@ -2,6 +2,7 @@ export interface Business {
   slug: string;
   name: string;
   logo?: string;
+  logoBg?: string;
   address: string;
   phone: string;
   whatsapp: string;
@@ -15,6 +16,8 @@ export const businesses: Business[] = [
   {
     slug: "hotel-well-suites-koramangala",
     name: "Hotel Well Suites Koramangala",
+    logo: "/logos/hotel-well-suites.png",
+    logoBg: "bg-white ring-amber-900/20 shadow-stone-900/20",
     address: "KHB Colony, 7th Block, Koramangala, Bengaluru, Karnataka 560095",
     phone: "",
     whatsapp: "",
@@ -26,6 +29,8 @@ export const businesses: Business[] = [
   {
     slug: "hotel-well-suites-electronic-city",
     name: "Hotel Well Suites Electronic City",
+    logo: "/logos/hotel-well-suites.png",
+    logoBg: "bg-white ring-amber-900/20 shadow-stone-900/20",
     address:
       "#21, Konappana Agrahara, Begur Hobli, Beside Bosch Showroom, Electronic City, Bengaluru - 560100",
     phone: "6361109761",
@@ -38,6 +43,8 @@ export const businesses: Business[] = [
   {
     slug: "hotel-well-suites-madivala",
     name: "Hotel Well Suites Madivala",
+    logo: "/logos/hotel-well-suites.png",
+    logoBg: "bg-white ring-amber-900/20 shadow-stone-900/20",
     address:
       "45, 1st Main Rd, Zuzuvadi, Maruti Nagar, 1st Stage, BTM 1st Stage, Bengaluru, Karnataka 560068",
     phone: "7338579282",
@@ -51,6 +58,7 @@ export const businesses: Business[] = [
     slug: "seven-sky-inn",
     name: "Seven Sky Inn",
     logo: "/logos/seven-sky-inn.png",
+    logoBg: "bg-black ring-amber-400/30 shadow-amber-500/10",
     address:
       "Maruthi Nagar Main Rd, near Palooda Cafe, Zuzuvadi, Madiwala, 1st Stage, BTM 1st Stage, Bengaluru, Karnataka 560068",
     phone: "07349473423",

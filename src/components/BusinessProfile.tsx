@@ -129,11 +129,15 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
 
           {/* Business Avatar / Logo */}
           {business.logo ? (
-            <div className="relative w-24 h-24 rounded-2xl overflow-hidden ring-2 ring-amber-400/30 shadow-xl shadow-amber-500/10 mb-5 bg-black flex items-center justify-center p-2">
+            <div
+              className={`relative w-28 h-24 rounded-2xl overflow-hidden ring-2 shadow-xl mb-5 flex items-center justify-center p-2.5 ${
+                business.logoBg || "bg-white ring-white/20 shadow-white/5"
+              }`}
+            >
               <Image
                 src={business.logo}
                 alt={business.name}
-                width={96}
+                width={112}
                 height={96}
                 priority
                 className="w-full h-full object-contain rounded-xl"
