@@ -17,6 +17,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://acuriqs-business-card.vercel.app"),
   title: "Smart NFC Business Cards",
   description: "One tap. Everything your customer needs. Premium digital business cards powered by NFC.",
   icons: {

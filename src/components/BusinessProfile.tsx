@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
   Phone,
   Navigation,
@@ -126,10 +127,23 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
             <span>NFC DIGITAL PROFILE</span>
           </div>
 
-          {/* Business Avatar / Monogram */}
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-indigo-500/25 ring-4 ring-white/10 mb-5 select-none">
-            {initials}
-          </div>
+          {/* Business Avatar / Logo */}
+          {business.logo ? (
+            <div className="relative w-24 h-24 rounded-2xl overflow-hidden ring-2 ring-amber-400/30 shadow-xl shadow-amber-500/10 mb-5 bg-black flex items-center justify-center p-2">
+              <Image
+                src={business.logo}
+                alt={business.name}
+                width={96}
+                height={96}
+                priority
+                className="w-full h-full object-contain rounded-xl"
+              />
+            </div>
+          ) : (
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-indigo-500/25 ring-4 ring-white/10 mb-5 select-none">
+              {initials}
+            </div>
+          )}
 
           {/* Business Name */}
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">

@@ -36,6 +36,13 @@ export async function generateMetadata({
       title: business.name,
       description: business.address || "Smart NFC Business Card Profile",
       type: "website",
+      images: business.logo ? [{ url: business.logo }] : undefined,
+    },
+    twitter: {
+      card: "summary",
+      title: business.name,
+      description: business.address || "Smart NFC Business Card Profile",
+      images: business.logo ? [business.logo] : undefined,
     },
   };
 }

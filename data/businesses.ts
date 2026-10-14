@@ -1,6 +1,7 @@
 export interface Business {
   slug: string;
   name: string;
+  logo?: string;
   address: string;
   phone: string;
   whatsapp: string;
@@ -49,6 +50,7 @@ export const businesses: Business[] = [
   {
     slug: "seven-sky-inn",
     name: "Seven Sky Inn",
+    logo: "/logos/seven-sky-inn.png",
     address:
       "Maruthi Nagar Main Rd, near Palooda Cafe, Zuzuvadi, Madiwala, 1st Stage, BTM 1st Stage, Bengaluru, Karnataka 560068",
     phone: "07349473423",
