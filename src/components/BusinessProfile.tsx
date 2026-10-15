@@ -1,33 +1,20 @@
 import React from "react";
 import Image from "next/image";
-import {
-  Phone,
-  Navigation,
-  Globe,
-  Star,
-  MapPin,
-  ChevronRight,
-  Wifi,
-} from "lucide-react";
+import { Phone, MapPin, Globe, Star, Wifi } from "lucide-react";
 import { Business } from "@/data/businesses";
 
 interface BusinessProfileProps {
   business: Business;
 }
 
-function WhatsAppIcon({ className = "w-5 h-5 text-white" }: { className?: string }) {
+function WhatsAppIcon({ className = "w-6 h-6 text-white" }: { className?: string }) {
   return (
     <svg
       className={className}
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fill="currentColor"
     >
-      <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
-      <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
+      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.07s.89 2.4 1.01 2.57c.13.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.17-.48-.29" />
     </svg>
   );
 }
@@ -79,9 +66,6 @@ export function formatWebUrl(url: string): string {
   return `https://${trimmed}`;
 }
 
-/**
- * Returns initials from business name for the avatar badge
- */
 function getInitials(name: string): string {
   if (!name) return "BC";
   const words = name.trim().split(/\s+/).filter(Boolean);
@@ -96,7 +80,6 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
   const hasInstagram = Boolean(business.instagram && business.instagram.trim() !== "");
   const hasWebsite = Boolean(business.website && business.website.trim() !== "");
   const hasReview = Boolean(business.reviewUrl && business.reviewUrl.trim() !== "");
-  const hasAddress = Boolean(business.address && business.address.trim() !== "");
 
   const telHref = hasPhone ? formatTelUrl(business.phone) : "";
   const whatsAppHref = hasWhatsApp ? formatWhatsAppUrl(business.whatsapp) : "";
@@ -105,205 +88,172 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
   const initials = getInitials(business.name);
 
   return (
-    <main className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col justify-between items-center px-4 py-8 sm:py-12 relative overflow-hidden">
-      {/* Ambient background glow effects */}
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-
-      {/* Center Container for Mobile-First Display */}
-      <div className="w-full max-w-md mx-auto relative z-10 flex flex-col items-center">
-        {/* NFC Card Shell */}
-        <div className="w-full rounded-3xl glass-card p-6 sm:p-8 flex flex-col items-center text-center transition-all duration-300">
-          
-          {/* Top NFC Tag Chip */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300 mb-6 tracking-wide">
-            <Wifi className="w-3.5 h-3.5 text-blue-400 rotate-90" />
-            <span>NFC DIGITAL PROFILE</span>
-          </div>
-
-          {/* Business Avatar / Logo */}
-          {business.logo ? (
-            <div
-              className={`relative w-28 h-24 rounded-2xl overflow-hidden ring-2 shadow-xl mb-5 flex items-center justify-center p-2.5 ${
-                business.logoBg || "bg-white ring-white/20 shadow-white/5"
-              }`}
-            >
+    <main className="min-h-screen bg-[#f3f4f6] text-slate-900 flex justify-center py-0 sm:py-8 sm:px-4 selection:bg-amber-100">
+      {/* Mobile-proportional Container */}
+      <div className="w-full max-w-[420px] bg-white sm:rounded-[36px] sm:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] sm:border sm:border-slate-100 min-h-screen sm:min-h-0 flex flex-col items-center px-5 py-6">
+        
+        {/* Top Business Logo */}
+        {business.logo ? (
+          <div className="w-full flex items-center justify-center pt-2 pb-1">
+            <div className="relative w-44 h-20">
               <Image
                 src={business.logo}
                 alt={business.name}
-                width={112}
-                height={96}
+                fill
                 priority
-                className="w-full h-full object-contain rounded-xl"
+                className="object-contain"
               />
             </div>
-          ) : (
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-indigo-500/25 ring-4 ring-white/10 mb-5 select-none">
-              {initials}
-            </div>
-          )}
+          </div>
+        ) : (
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 flex items-center justify-center text-white text-2xl font-bold shadow-md my-2">
+            {initials}
+          </div>
+        )}
 
-          {/* Business Name */}
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+        {/* Hero Room / Cover Image */}
+        {business.coverImage && (
+          <div className="w-full aspect-[16/10] rounded-3xl overflow-hidden shadow-sm relative mt-3 border border-slate-100">
+            <Image
+              src={business.coverImage}
+              alt={`${business.name} preview`}
+              fill
+              priority
+              className="object-cover"
+            />
+          </div>
+        )}
+
+        {/* Title, Branch, & Location Subtitle */}
+        <div className="mt-4 text-center w-full px-2">
+          <h1 className="text-xl sm:text-[22px] font-bold text-slate-900 tracking-tight leading-snug">
             {business.name}
           </h1>
-
-          {/* Business Address */}
-          {hasAddress && (
-            <div className="mt-3 flex items-start justify-center gap-2 text-slate-400 text-sm leading-relaxed max-w-sm px-2">
-              <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-              <span>{business.address}</span>
-            </div>
+          {business.branch && (
+            <p className="text-base sm:text-[17px] font-semibold text-slate-800 mt-0.5">
+              {business.branch}
+            </p>
           )}
-
-          {/* Subtle separator */}
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-6" />
-
-          {/* Action Buttons List */}
-          <div className="w-full flex flex-col gap-3.5">
-            {/* 1. Call Button */}
-            {hasPhone && (
-              <a
-                href={telHref}
-                id="btn-call"
-                className="w-full min-h-[58px] px-5 py-3.5 rounded-2xl action-btn-primary text-white font-medium flex items-center justify-between group transition duration-200"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                    <Phone className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-sm font-semibold tracking-wide">Call</div>
-                    <div className="text-xs text-blue-100 opacity-90">{business.phone}</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-blue-100/70 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            )}
-
-            {/* 2. WhatsApp Button */}
-            {hasWhatsApp && (
-              <a
-                href={whatsAppHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                id="btn-whatsapp"
-                className="w-full min-h-[58px] px-5 py-3.5 rounded-2xl action-btn-whatsapp text-white font-medium flex items-center justify-between group transition duration-200"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                    <WhatsAppIcon className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-sm font-semibold tracking-wide">WhatsApp</div>
-                    <div className="text-xs text-emerald-100 opacity-90">Message directly</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-emerald-100/70 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            )}
-
-            {/* 3. Get Directions Button */}
-            {hasMaps && (
-              <a
-                href={business.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                id="btn-directions"
-                className="w-full min-h-[58px] px-5 py-3.5 rounded-2xl action-btn-maps text-white font-medium flex items-center justify-between group transition duration-200"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                    <Navigation className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-sm font-semibold tracking-wide">Get Directions</div>
-                    <div className="text-xs text-sky-100 opacity-90">Open Google Maps</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-sky-100/70 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            )}
-
-            {/* 4. Instagram Button */}
-            {hasInstagram && (
-              <a
-                href={business.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                id="btn-instagram"
-                className="w-full min-h-[58px] px-5 py-3.5 rounded-2xl action-btn-instagram text-white font-medium flex items-center justify-between group transition duration-200"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                    <InstagramIcon className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-sm font-semibold tracking-wide">Instagram</div>
-                    <div className="text-xs text-rose-100 opacity-90">View profile & posts</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-rose-100/70 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            )}
-
-            {/* 5. Website Button */}
-            {hasWebsite && (
-              <a
-                href={websiteHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                id="btn-website"
-                className="w-full min-h-[58px] px-5 py-3.5 rounded-2xl action-btn-website text-white font-medium flex items-center justify-between group transition duration-200"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                    <Globe className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-sm font-semibold tracking-wide">Website</div>
-                    <div className="text-xs text-indigo-100 opacity-90">Visit official website</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-indigo-100/70 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            )}
-
-            {/* 6. Leave a Review Button */}
-            {hasReview && (
-              <a
-                href={business.reviewUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                id="btn-review"
-                className="w-full min-h-[58px] px-5 py-3.5 rounded-2xl action-btn-review text-white font-medium flex items-center justify-between group transition duration-200"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                    <Star className="w-5 h-5 text-white fill-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-sm font-semibold tracking-wide">Leave a Review</div>
-                    <div className="text-xs text-amber-100 opacity-90">Rate your experience</div>
-                  </div>
-                </div>
-                <ChevronRight className="w-5 h-5 text-amber-100/70 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            )}
-          </div>
+          <p className="text-xs sm:text-[13px] text-slate-400 font-normal mt-0.5">
+            {business.city || business.address}
+          </p>
         </div>
 
-        {/* Footer Brand Branding */}
-        <div className="mt-8 text-center text-xs text-slate-500 flex items-center gap-1.5 justify-center">
+        {/* Action Buttons List (Matching the design screenshot) */}
+        <div className="mt-5 w-full flex flex-col gap-2.5">
+          {/* 1. Call Now */}
+          {hasPhone && (
+            <a
+              href={telHref}
+              id="btn-call"
+              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+            >
+              <div className="w-11 h-11 rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/20">
+                <Phone className="w-5 h-5 text-white fill-white" />
+              </div>
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+                Call Now
+              </span>
+            </a>
+          )}
+
+          {/* 2. WhatsApp */}
+          {hasWhatsApp && (
+            <a
+              href={whatsAppHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              id="btn-whatsapp"
+              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+            >
+              <div className="w-11 h-11 rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/20">
+                <WhatsAppIcon className="w-6 h-6 text-white" />
+              </div>
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+                WhatsApp
+              </span>
+            </a>
+          )}
+
+          {/* 3. Get Directions */}
+          {hasMaps && (
+            <a
+              href={business.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              id="btn-directions"
+              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+            >
+              <div className="w-11 h-11 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center shrink-0">
+                <MapPin className="w-6 h-6 text-[#EA4335] fill-[#EA4335]" />
+              </div>
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+                Get Directions
+              </span>
+            </a>
+          )}
+
+          {/* 4. Leave a Review */}
+          {hasReview && (
+            <a
+              href={business.reviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              id="btn-review"
+              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+            >
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-b from-[#fbbf24] to-[#f59e0b] flex items-center justify-center shrink-0 shadow-sm shadow-amber-500/20">
+                <Star className="w-5 h-5 text-white fill-white" />
+              </div>
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+                Leave a Review
+              </span>
+            </a>
+          )}
+
+          {/* 5. Instagram */}
+          {hasInstagram && (
+            <a
+              href={business.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              id="btn-instagram"
+              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+            >
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center shrink-0 shadow-sm">
+                <InstagramIcon className="w-5 h-5 text-white" />
+              </div>
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+                Instagram
+              </span>
+            </a>
+          )}
+
+          {/* 6. Visit Website */}
+          {hasWebsite && (
+            <a
+              href={websiteHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              id="btn-website"
+              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+            >
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#0070f3] to-[#0051cb] flex items-center justify-center shrink-0 shadow-sm shadow-blue-500/20">
+                <Globe className="w-5 h-5 text-white" />
+              </div>
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+                Visit Website
+              </span>
+            </a>
+          )}
+        </div>
+
+        {/* Subtle Brand Tagline */}
+        <div className="mt-8 pb-2 text-center text-xs text-slate-400 flex items-center gap-1.5 justify-center">
           <Wifi className="w-3.5 h-3.5 text-slate-400 rotate-90" />
           <span>Smart NFC Business Card</span>
         </div>
+
       </div>
     </main>
   );
