@@ -55,7 +55,7 @@ export const businesses: Business[] = [
     branch: "Madivala",
     city: "Bengaluru, Karnataka",
     logo: "/logos/hotel-well-suites.png",
-    coverImage: "/images/hotel-well-suites-cover.jpg",
+    coverImage: "/images/hotel-well-suites-madivala-cover.png",
     logoBg: "bg-white",
     address:
       "45, 1st Main Rd, Zuzuvadi, Maruti Nagar, 1st Stage, BTM 1st Stage, Bengaluru, Karnataka 560068",
