@@ -38,7 +38,7 @@ export const businesses: Business[] = [
     branch: "Electronic City",
     city: "Bengaluru, Karnataka",
     logo: "/logos/hotel-well-suites.png",
-    coverImage: "/images/hotel-well-suites-cover.jpg",
+    coverImage: "/images/hotel-well-suites-electronic-city-cover.png",
     logoBg: "bg-white",
     address:
       "#21, Konappana Agrahara, Begur Hobli, Beside Bosch Showroom, Electronic City, Bengaluru - 560100",
