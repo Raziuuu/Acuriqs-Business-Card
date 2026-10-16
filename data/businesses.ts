@@ -77,7 +77,7 @@ export const businesses: Business[] = [
     address:
       "Maruthi Nagar Main Rd, near Palooda Cafe, Zuzuvadi, Madiwala, 1st Stage, BTM 1st Stage, Bengaluru, Karnataka 560068",
     phone: "07349473423",
-    whatsapp: "07349473423",
+    whatsapp: "8197422688",
     mapsUrl: "https://maps.app.goo.gl/bkjZPGqVExKbJSPe7",
     instagram: "https://www.instagram.com/seven_sky_in",
     website: "",
