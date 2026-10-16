@@ -249,9 +249,14 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
         </div>
 
         {/* Subtle Brand Tagline */}
-        <div className="mt-8 pb-2 text-center text-xs text-slate-400 flex items-center gap-1.5 justify-center">
-          <Wifi className="w-3.5 h-3.5 text-slate-400 rotate-90" />
-          <span>Smart NFC Business Card</span>
+        <div className="mt-8 pb-3 text-center flex items-center justify-center">
+          <a
+            href="/"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            <Wifi className="w-3.5 h-3.5 rotate-90 text-slate-400" />
+            <span>Powered by <span className="font-semibold text-slate-600">Acuriqs</span></span>
+          </a>
         </div>
 
       </div>
