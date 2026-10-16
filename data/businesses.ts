@@ -22,7 +22,7 @@ export const businesses: Business[] = [
     branch: "Koramangala",
     city: "Bengaluru, Karnataka",
     logo: "/logos/hotel-well-suites.png",
-    coverImage: "/images/hotel-well-suites-cover.jpg",
+    coverImage: "/images/hotel-well-suites-koramangala-cover.jpg",
     logoBg: "bg-white",
     address: "KHB Colony, 7th Block, Koramangala, Bengaluru, Karnataka 560095",
     phone: "",
