@@ -81,7 +81,7 @@ export const businesses: Business[] = [
     mapsUrl: "https://maps.app.goo.gl/bkjZPGqVExKbJSPe7",
     instagram: "https://www.instagram.com/seven_sky_in",
     website: "",
-    reviewUrl: "https://maps.app.goo.gl/bkjZPGqVExKbJSPe7",
+    reviewUrl: "https://g.page/r/CemtN639KSJzEBM/review",
   },
 ];
 
