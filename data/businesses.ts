@@ -50,12 +50,12 @@ export const businesses: Business[] = [
     reviewUrl: "https://maps.app.goo.gl/rNpruqgbfAnTQVg97",
   },
   {
-    slug: "hotel-well-suites-madivala",
+    slug: "hotel-well-suites-madiwala",
     name: "Hotel Well Suites",
-    branch: "Madivala",
+    branch: "Madiwala",
     city: "Bengaluru, Karnataka",
     logo: "/logos/hotel-well-suites.png",
-    coverImage: "/images/hotel-well-suites-madivala-cover.png",
+    coverImage: "/images/hotel-well-suites-madiwala-cover.png",
     logoBg: "bg-white",
     address:
       "45, 1st Main Rd, Zuzuvadi, Maruti Nagar, 1st Stage, BTM 1st Stage, Bengaluru, Karnataka 560068",
@@ -89,7 +89,12 @@ export const businesses: Business[] = [
  * Retrieves a business by its unique URL slug.
  */
 export function getBusinessBySlug(slug: string): Business | undefined {
-  return businesses.find((b) => b.slug.toLowerCase() === slug.toLowerCase());
+  const normalized = slug.toLowerCase();
+  // Backward compatibility alias in case previously issued cards/links are tapped
+  if (normalized === "hotel-well-suites-madivala") {
+    return businesses.find((b) => b.slug === "hotel-well-suites-madiwala");
+  }
+  return businesses.find((b) => b.slug.toLowerCase() === normalized);
 }
 
 /**

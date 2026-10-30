@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/hotel-well-suites-madivala",
+        destination: "/hotel-well-suites-madiwala",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
