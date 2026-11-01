@@ -1,3 +1,10 @@
+export interface Room {
+  id: string;
+  name: string;
+  image: string;
+  description?: string;
+}
+
 export interface Business {
   slug: string;
   name: string;
@@ -13,6 +20,7 @@ export interface Business {
   instagram: string;
   website: string;
   reviewUrl: string;
+  rooms?: Room[];
 }
 
 export const businesses: Business[] = [
@@ -82,6 +90,33 @@ export const businesses: Business[] = [
     instagram: "https://www.instagram.com/seven_sky_in",
     website: "",
     reviewUrl: "https://g.page/r/CemtN639KSJzEBM/review",
+    rooms: [
+      {
+        id: "executive-room",
+        name: "Executive Room",
+        image: "/images/rooms/seven-sky/executive-room.jpg",
+      },
+      {
+        id: "executive-plus-room",
+        name: "Executive plus Room",
+        image: "/images/rooms/seven-sky/executive-plus-room.jpg",
+      },
+      {
+        id: "supreme-room",
+        name: "Supreme room",
+        image: "/images/rooms/seven-sky/supreme-room.jpg",
+      },
+      {
+        id: "triple-bed-room",
+        name: "Tripple bed room",
+        image: "/images/rooms/seven-sky/triple-bed-room.jpg",
+      },
+      {
+        id: "family-room",
+        name: "Family Room",
+        image: "/images/rooms/seven-sky/family-room.jpg",
+      },
+    ],
   },
 ];
 

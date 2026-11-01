@@ -1,7 +1,9 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Phone, MapPin, Star, Wifi } from "lucide-react";
-import { Business } from "@/data/businesses";
+import { Phone, MapPin, Star, Wifi, BedDouble, X, Maximize2 } from "lucide-react";
+import { Business, Room } from "@/data/businesses";
 
 interface BusinessProfileProps {
   business: Business;
@@ -37,7 +39,7 @@ function InstagramIcon({ className = "w-5 h-5 text-white" }: { className?: strin
   );
 }
 
-export function formatWhatsAppUrl(whatsapp: string): string {
+export function formatWhatsAppUrl(whatsapp: string, customText?: string): string {
   if (!whatsapp || !whatsapp.trim()) return "";
   const digitsOnly = whatsapp.replace(/\D/g, "");
   if (!digitsOnly) return "";
@@ -48,7 +50,8 @@ export function formatWhatsAppUrl(whatsapp: string): string {
   if (cleanNumber.length === 10) {
     cleanNumber = `91${cleanNumber}`;
   }
-  return `https://wa.me/${cleanNumber}`;
+  const textQuery = customText ? `?text=${encodeURIComponent(customText)}` : "";
+  return `https://wa.me/${cleanNumber}${textQuery}`;
 }
 
 export function formatTelUrl(phone: string): string {
@@ -65,16 +68,47 @@ function getInitials(name: string): string {
 }
 
 export default function BusinessProfile({ business }: BusinessProfileProps) {
+  const [isRoomsOpen, setIsRoomsOpen] = useState(false);
+  const [activePhoto, setActivePhoto] = useState<Room | null>(null);
+
   const hasPhone = Boolean(business.phone && business.phone.trim() !== "");
   const hasWhatsApp = Boolean(business.whatsapp && business.whatsapp.trim() !== "");
   const hasMaps = Boolean(business.mapsUrl && business.mapsUrl.trim() !== "");
   const hasInstagram = Boolean(business.instagram && business.instagram.trim() !== "");
   const hasReview = Boolean(business.reviewUrl && business.reviewUrl.trim() !== "");
+  const hasRooms = Boolean(business.rooms && business.rooms.length > 0);
 
   const telHref = hasPhone ? formatTelUrl(business.phone) : "";
   const whatsAppHref = hasWhatsApp ? formatWhatsAppUrl(business.whatsapp) : "";
 
   const initials = getInitials(business.name);
+
+  // Lock body scroll when rooms drawer or photo preview is active
+  useEffect(() => {
+    if (isRoomsOpen || activePhoto) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isRoomsOpen, activePhoto]);
+
+  // Handle escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (activePhoto) {
+          setActivePhoto(null);
+        } else if (isRoomsOpen) {
+          setIsRoomsOpen(false);
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activePhoto, isRoomsOpen]);
 
   return (
     <main className="min-h-[100dvh] bg-[#f8fafc] sm:bg-[#f1f5f9] text-slate-900 flex justify-center py-0 sm:py-8 sm:px-4 selection:bg-amber-100">
@@ -168,7 +202,27 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
             </a>
           )}
 
-          {/* 3. Get Directions */}
+          {/* 3. Explore Rooms (Prominent for hotels with rooms) */}
+          {hasRooms && (
+            <button
+              type="button"
+              onClick={() => setIsRoomsOpen(true)}
+              id="btn-explore-rooms"
+              className="w-full h-[52px] sm:h-[58px] bg-white rounded-2xl border border-indigo-200/90 shadow-[0_2px_12px_rgba(99,102,241,0.10)] hover:shadow-md hover:border-indigo-400 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 touch-manipulation group cursor-pointer text-left"
+            >
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-600 flex items-center justify-center shrink-0 shadow-sm shadow-indigo-500/25">
+                <BedDouble className="w-5 h-5 text-white" />
+              </div>
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[15px] sm:text-[16px] tracking-tight pl-2">
+                Explore Rooms
+              </span>
+              <span className="text-[11px] font-semibold tracking-wide uppercase px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100/80 shrink-0">
+                {business.rooms?.length} Rooms
+              </span>
+            </button>
+          )}
+
+          {/* 4. Get Directions */}
           {hasMaps && (
             <a
               href={business.mapsUrl}
@@ -187,7 +241,7 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
             </a>
           )}
 
-          {/* 4. Leave a Review */}
+          {/* 5. Leave a Review */}
           {hasReview && (
             <a
               href={business.reviewUrl}
@@ -206,7 +260,7 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
             </a>
           )}
 
-          {/* 5. Instagram */}
+          {/* 6. Instagram */}
           {hasInstagram && (
             <a
               href={business.instagram}
@@ -238,6 +292,198 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
         </div>
 
       </div>
+
+      {/* Explore Rooms Bottom Sheet / Modal */}
+      {hasRooms && isRoomsOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="explore-rooms-title"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-center items-end sm:items-center p-0 sm:p-4 animate-in fade-in duration-200"
+          onClick={() => setIsRoomsOpen(false)}
+        >
+          <div
+            className="w-full max-w-[480px] max-h-[90vh] bg-white rounded-t-[28px] sm:rounded-[32px] shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-6 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Grabber bar for mobile */}
+            <div className="w-10 h-1 bg-slate-200 rounded-full mx-auto mt-2.5 sm:hidden" />
+
+            {/* Header */}
+            <div className="px-5 pt-3.5 pb-3 border-b border-slate-100 flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                    <BedDouble className="w-4 h-4" />
+                  </div>
+                  <h2 id="explore-rooms-title" className="text-lg font-bold text-slate-900 tracking-tight">
+                    Explore Rooms
+                  </h2>
+                </div>
+                <p className="text-xs text-slate-400 mt-0.5 pl-9">
+                  {business.name} • {business.branch || business.city}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsRoomsOpen(false)}
+                className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
+                aria-label="Close rooms modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Rooms List */}
+            <div className="overflow-y-auto px-4 py-4 space-y-4">
+              {business.rooms?.map((room, idx) => {
+                const roomInquiryText = `Hi ${business.name}, I would like to inquire about booking the ${room.name}.`;
+                const roomWhatsAppUrl = formatWhatsAppUrl(business.whatsapp, roomInquiryText);
+
+                return (
+                  <div
+                    key={room.id}
+                    className="border border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/50 hover:border-slate-300 transition-all shadow-sm"
+                  >
+                    {/* Room Image with click-to-preview */}
+                    <div
+                      className="relative w-full aspect-[16/10] bg-slate-200 cursor-pointer group"
+                      onClick={() => setActivePhoto(room)}
+                    >
+                      <Image
+                        src={room.image}
+                        alt={room.name}
+                        fill
+                        className="object-cover group-hover:scale-102 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, 480px"
+                      />
+                      <div className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-sm">
+                        {idx + 1} of {business.rooms?.length}
+                      </div>
+                      <div className="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-md text-white p-1.5 rounded-xl opacity-80 group-hover:opacity-100 transition shadow-sm">
+                        <Maximize2 className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+
+                    {/* Room Info & Booking CTA */}
+                    <div className="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
+                      <div>
+                        <h3 className="font-bold text-slate-900 text-base tracking-tight">
+                          {room.name}
+                        </h3>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          Spacious • AC • Clean Linens • Premium Stay
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {hasPhone && (
+                          <a
+                            href={telHref}
+                            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 transition"
+                            title={`Call to inquire about ${room.name}`}
+                          >
+                            <Phone className="w-4 h-4" />
+                          </a>
+                        )}
+
+                        {hasWhatsApp && (
+                          <a
+                            href={roomWhatsAppUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 sm:flex-initial px-3.5 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm shadow-emerald-500/20 transition"
+                          >
+                            <WhatsAppIcon className="w-4 h-4 text-white" />
+                            <span>Inquire / Book</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bottom Footer Action */}
+            <div className="px-5 py-3 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-xs text-slate-500">
+              <span>Need special assistance?</span>
+              {hasPhone && (
+                <a
+                  href={telHref}
+                  className="font-semibold text-indigo-600 hover:underline inline-flex items-center gap-1"
+                >
+                  <Phone className="w-3 h-3" />
+                  Call Front Desk
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen Photo Lightbox */}
+      {activePhoto && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-60 bg-black/95 flex flex-col items-center justify-center p-3 animate-in fade-in duration-150"
+          onClick={() => setActivePhoto(null)}
+        >
+          {/* Top Bar */}
+          <div className="w-full max-w-2xl flex items-center justify-between text-white pb-3 px-2">
+            <div>
+              <h4 className="font-bold text-base">{activePhoto.name}</h4>
+              <p className="text-xs text-slate-400">{business.name}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setActivePhoto(null)}
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center cursor-pointer transition"
+              aria-label="Close photo preview"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Full Image */}
+          <div
+            className="relative w-full max-w-2xl aspect-[4/3] sm:aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl bg-black"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={activePhoto.image}
+              alt={activePhoto.name}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 800px"
+              priority
+            />
+          </div>
+
+          {/* Action Bar below lightbox */}
+          <div
+            className="mt-4 flex items-center gap-3 w-full max-w-2xl px-2 justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {hasWhatsApp && (
+              <a
+                href={formatWhatsAppUrl(
+                  business.whatsapp,
+                  `Hi ${business.name}, I am viewing the ${activePhoto.name} on your card and would like to check availability.`
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-3 rounded-xl bg-[#25D366] text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-95 transition"
+              >
+                <WhatsAppIcon className="w-4 h-4 text-white" />
+                <span>Book this Room via WhatsApp</span>
+              </a>
+            )}
+          </div>
+        </div>
+      )}
     </main>
   );
 }
