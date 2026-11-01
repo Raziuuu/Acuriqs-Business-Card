@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { Phone, MapPin, Globe, Star, Wifi } from "lucide-react";
+import { Phone, MapPin, Star, Wifi } from "lucide-react";
 import { Business } from "@/data/businesses";
 
 interface BusinessProfileProps {
@@ -57,15 +57,6 @@ export function formatTelUrl(phone: string): string {
   return `tel:${cleanPhone}`;
 }
 
-export function formatWebUrl(url: string): string {
-  if (!url || !url.trim()) return "";
-  const trimmed = url.trim();
-  if (/^https?:\/\//i.test(trimmed)) {
-    return trimmed;
-  }
-  return `https://${trimmed}`;
-}
-
 function getInitials(name: string): string {
   if (!name) return "BC";
   const words = name.trim().split(/\s+/).filter(Boolean);
@@ -78,54 +69,54 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
   const hasWhatsApp = Boolean(business.whatsapp && business.whatsapp.trim() !== "");
   const hasMaps = Boolean(business.mapsUrl && business.mapsUrl.trim() !== "");
   const hasInstagram = Boolean(business.instagram && business.instagram.trim() !== "");
-  const hasWebsite = Boolean(business.website && business.website.trim() !== "");
   const hasReview = Boolean(business.reviewUrl && business.reviewUrl.trim() !== "");
 
   const telHref = hasPhone ? formatTelUrl(business.phone) : "";
   const whatsAppHref = hasWhatsApp ? formatWhatsAppUrl(business.whatsapp) : "";
-  const websiteHref = hasWebsite ? formatWebUrl(business.website) : "";
 
   const initials = getInitials(business.name);
 
   return (
-    <main className="min-h-screen bg-[#f3f4f6] text-slate-900 flex justify-center py-0 sm:py-8 sm:px-4 selection:bg-amber-100">
+    <main className="min-h-[100dvh] bg-[#f8fafc] sm:bg-[#f1f5f9] text-slate-900 flex justify-center py-0 sm:py-8 sm:px-4 selection:bg-amber-100">
       {/* Mobile-proportional Container */}
-      <div className="w-full max-w-[420px] bg-white sm:rounded-[36px] sm:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] sm:border sm:border-slate-100 min-h-screen sm:min-h-0 flex flex-col items-center px-5 py-6">
+      <div className="w-full max-w-[420px] bg-white sm:rounded-[36px] sm:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)] sm:border sm:border-slate-200/80 min-h-[100dvh] sm:min-h-0 flex flex-col items-center px-4 sm:px-6 pt-[max(1.25rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         
         {/* Top Business Logo */}
         {business.logo ? (
-          <div className="w-full flex items-center justify-center pt-2 pb-1">
-            <div className="relative w-44 h-20">
+          <div className="w-full flex items-center justify-center pt-1 pb-1">
+            <div className="relative w-36 h-16 sm:w-44 sm:h-20">
               <Image
                 src={business.logo}
                 alt={business.name}
                 fill
                 priority
                 className="object-contain"
+                sizes="(max-width: 640px) 150px, 180px"
               />
             </div>
           </div>
         ) : (
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 flex items-center justify-center text-white text-2xl font-bold shadow-md my-2">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-md my-2">
             {initials}
           </div>
         )}
 
         {/* Hero Room / Cover Image */}
         {business.coverImage && (
-          <div className="w-full aspect-[16/10] rounded-3xl overflow-hidden shadow-sm relative mt-3 border border-slate-100">
+          <div className="w-full aspect-[16/9] sm:aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm relative mt-2 sm:mt-3 border border-slate-100 bg-slate-50">
             <Image
               src={business.coverImage}
               alt={`${business.name} preview`}
               fill
               priority
               className="object-cover"
+              sizes="(max-width: 640px) 100vw, 420px"
             />
           </div>
         )}
 
         {/* Title, Branch, & Location Subtitle */}
-        <div className="mt-4 text-center w-full px-2">
+        <div className="mt-3.5 sm:mt-4 text-center w-full px-2">
           <h1 className="text-xl sm:text-[22px] font-bold text-slate-900 tracking-tight leading-snug">
             {business.name}
           </h1>
@@ -134,26 +125,27 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
               {business.branch}
             </p>
           )}
-          <p className="text-xs sm:text-[13px] text-slate-400 font-normal mt-0.5">
+          <p className="text-xs sm:text-[13px] text-slate-500 font-normal mt-0.5 max-w-[90%] mx-auto line-clamp-2">
             {business.city || business.address}
           </p>
         </div>
 
-        {/* Action Buttons List (Matching the design screenshot) */}
-        <div className="mt-5 w-full flex flex-col gap-2.5">
+        {/* Action Buttons List */}
+        <div className="mt-4 sm:mt-5 w-full flex flex-col gap-2.5">
           {/* 1. Call Now */}
           {hasPhone && (
             <a
               href={telHref}
               id="btn-call"
-              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+              className="w-full h-[52px] sm:h-[58px] bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 touch-manipulation group"
             >
-              <div className="w-11 h-11 rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/20">
-                <Phone className="w-5 h-5 text-white fill-white" />
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/20">
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-white fill-white" />
               </div>
-              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[15px] sm:text-[16px] tracking-tight">
                 Call Now
               </span>
+              <div className="w-10 sm:w-11 shrink-0" aria-hidden="true" />
             </a>
           )}
 
@@ -164,14 +156,15 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
               target="_blank"
               rel="noopener noreferrer"
               id="btn-whatsapp"
-              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+              className="w-full h-[52px] sm:h-[58px] bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 touch-manipulation group"
             >
-              <div className="w-11 h-11 rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/20">
-                <WhatsAppIcon className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0 shadow-sm shadow-emerald-500/20">
+                <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
-              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[15px] sm:text-[16px] tracking-tight">
                 WhatsApp
               </span>
+              <div className="w-10 sm:w-11 shrink-0" aria-hidden="true" />
             </a>
           )}
 
@@ -182,14 +175,15 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
               target="_blank"
               rel="noopener noreferrer"
               id="btn-directions"
-              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+              className="w-full h-[52px] sm:h-[58px] bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 touch-manipulation group"
             >
-              <div className="w-11 h-11 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center shrink-0">
-                <MapPin className="w-6 h-6 text-[#EA4335] fill-[#EA4335]" />
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center shrink-0">
+                <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#EA4335] fill-[#EA4335]" />
               </div>
-              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[15px] sm:text-[16px] tracking-tight">
                 Get Directions
               </span>
+              <div className="w-10 sm:w-11 shrink-0" aria-hidden="true" />
             </a>
           )}
 
@@ -200,14 +194,15 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
               target="_blank"
               rel="noopener noreferrer"
               id="btn-review"
-              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+              className="w-full h-[52px] sm:h-[58px] bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 touch-manipulation group"
             >
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-b from-[#fbbf24] to-[#f59e0b] flex items-center justify-center shrink-0 shadow-sm shadow-amber-500/20">
-                <Star className="w-5 h-5 text-white fill-white" />
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-b from-[#fbbf24] to-[#f59e0b] flex items-center justify-center shrink-0 shadow-sm shadow-amber-500/20">
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-white fill-white" />
               </div>
-              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[15px] sm:text-[16px] tracking-tight">
                 Leave a Review
               </span>
+              <div className="w-10 sm:w-11 shrink-0" aria-hidden="true" />
             </a>
           )}
 
@@ -218,38 +213,21 @@ export default function BusinessProfile({ business }: BusinessProfileProps) {
               target="_blank"
               rel="noopener noreferrer"
               id="btn-instagram"
-              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
+              className="w-full h-[52px] sm:h-[58px] bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 touch-manipulation group"
             >
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center shrink-0 shadow-sm">
-                <InstagramIcon className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] flex items-center justify-center shrink-0 shadow-sm">
+                <InstagramIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
+              <span className="flex-1 text-center font-semibold text-slate-800 text-[15px] sm:text-[16px] tracking-tight">
                 Instagram
               </span>
-            </a>
-          )}
-
-          {/* 6. Visit Website */}
-          {hasWebsite && (
-            <a
-              href={websiteHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              id="btn-website"
-              className="w-full h-[58px] bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 active:scale-[0.98] transition-all duration-150 flex items-center px-2.5 relative group"
-            >
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#0070f3] to-[#0051cb] flex items-center justify-center shrink-0 shadow-sm shadow-blue-500/20">
-                <Globe className="w-5 h-5 text-white" />
-              </div>
-              <span className="flex-1 text-center font-semibold text-slate-800 text-[16px] tracking-tight pr-11">
-                Visit Website
-              </span>
+              <div className="w-10 sm:w-11 shrink-0" aria-hidden="true" />
             </a>
           )}
         </div>
 
         {/* Subtle Brand Tagline */}
-        <div className="mt-8 pb-3 text-center flex items-center justify-center">
+        <div className="mt-8 pb-2 text-center flex items-center justify-center">
           <a
             href="/"
             className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-slate-600 transition-colors"

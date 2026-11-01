@@ -46,7 +46,7 @@ export const businesses: Business[] = [
     whatsapp: "6361109761",
     mapsUrl: "https://maps.app.goo.gl/rNpruqgbfAnTQVg97",
     instagram: "https://www.instagram.com/well_suites",
-    website: "https://hotelwellsuites.com",
+    website: "",
     reviewUrl: "https://maps.app.goo.gl/rNpruqgbfAnTQVg97",
   },
   {
